@@ -1,0 +1,4 @@
+alias phpr-migrate-all='_phpr-migrate(){ php manage.php --opt=migrate ;}; _phpr-migrate'
+alias phpr-migrate='_phpr-migrate(){ php manage.php  --opt=migrate --name="$1";}; _phpr-migrate'
+alias phpr-app-create='_phpr-create(){ php manage.php --opt=createapp --name="$1";}; _phpr-create'
+alias phpr-app-delete='_phpr-delete(){ php manage.php --opt=deleteapp --name="$1";}; _phpr-delete'
