@@ -64,12 +64,12 @@ function js($file_path)
     header('Content-type: text/javascript');
     include $file_path . '.js';
 }
-function POST($type, $param, $value, $file_path)
+function POST($type, $param, $value, $file_path, $context)
 {
     if (isset($_POST[$param])) {
         if ($_POST[$param] == $value) {
             if ($type == 'php') {
-                php($file_path);
+                render_php($file_path, $context);
                 die();
             }
             if ($type == 'html') {
@@ -87,14 +87,14 @@ function POST($type, $param, $value, $file_path)
         }
     }
 }
-function GET($type, $param, $value, $file_path)
+function GET($type, $param, $value, $file_path, $context)
 {
     if ($type == 'redirect') {
         header('Location:' . $param);
     } elseif (isset($_GET[$param])) {
         if ($_GET[$param] == $value) {
             if ($type == 'php') {
-                php($file_path);
+                render_php($file_path, $context);
                 die();
             }
             if ($type == 'html') {
@@ -192,20 +192,58 @@ function response($val, $apptorun)
 {
     if ($val == 'POST') {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $type       = $apptorun[0];
-            $param      = $apptorun[1];
-            $value      = $apptorun[2];
-            $file_path  = $apptorun[3];
-            POST($type, $param, $value, $file_path);
+            $type       = '';
+            $param      = '';
+            $value      = '';
+            $file_path  = '';
+            $context    = [];
+            
+            foreach($apptorun as $apt => $apv){
+                if($apt == 'run'){
+                    $file_path = $apv;
+                }
+                if($apt == 'type'){
+                    $type = $apv;
+                }
+                if($apt == 'init'){
+                    foreach($apv as $apkey => $apval){
+                        $param = $apkey;
+                        $value = $apval;
+                    }
+                }
+                if($apt == 'context'){
+                    $context = $apv;
+                }
+            }
+            POST($type, $param, $value, $file_path, $context);
         }
     }
     if ($val == 'GET') {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $type       = $apptorun[0];
-            $param      = $apptorun[1];
-            $value      = $apptorun[2];
-            $file_path  = $apptorun[3];
-            GET($type, $param, $value, $file_path);
+            $type       = '';
+            $param      = '';
+            $value      = '';
+            $file_path  = '';
+            $context    = [];
+            
+            foreach($apptorun as $apt => $apv){
+                if($apt == 'run'){
+                    $file_path = $apv;
+                }
+                if($apt == 'type'){
+                    $type = $apv;
+                }
+                if($apt == 'init'){
+                    foreach($apv as $apkey => $apval){
+                        $param = $apkey;
+                        $value = $apval;
+                    }
+                }
+                if($apt == 'context'){
+                    $context = $apv;
+                }
+            }
+            GET($type, $param, $value, $file_path, $context);
         }
     }
     if ($val == 'PASS') {
