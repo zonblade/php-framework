@@ -1,3 +1,1 @@
-still in development, NOT READY FOR PRODUCTION!
-
-upcoming new version on december 2021
+new repository :: https://github.com/zonblade/phpr
